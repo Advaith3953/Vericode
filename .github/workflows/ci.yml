@@ -1,0 +1,30 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python }}" }
+      - run: pip install -e '.[dev]'
+      - run: make lint typecheck
+      - run: make cov
+      - run: make selftest
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Non-editable install must ship the bug cases and run
+        run: |
+          python -m venv /tmp/v && /tmp/v/bin/pip install . pytest
+          cd /tmp && /tmp/v/bin/python -m bench.harness --llm mock:oracle --out /tmp/out
+          /tmp/v/bin/vericode --help
