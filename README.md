@@ -29,7 +29,7 @@ python -m bench.harness --llm ollama:llama3.1:8b --seeds 3 --out results/run1
 ```
 Outputs: `results.jsonl` (one row per run), `summary.md` (table), `trajectories/*.json` (every step).
 
-## Design decisions (be ready to defend these)
+## Design decisions
 - **Hidden tests.** Each bug has a `hidden/` suite the agent never sees. "Resolved" means the hidden suite passes, so the agent cannot win by overfitting visible tests.
 - **Read-only original tests.** The agent cannot delete or weaken existing tests, and it cannot create or edit files that change how pytest runs (`conftest.py`, `pytest.ini`, `tox.ini`, `setup.cfg`, `pyproject.toml`, `sitecustomize.py`).
 - **Tamper-proof scoring.** Pass/fail counts come from pytest's own junit-xml report, not from scraping its text output, so a test that prints "99 passed" cannot change the numbers.
@@ -38,7 +38,7 @@ Outputs: `results.jsonl` (one row per run), `summary.md` (table), `trajectories/
 - **Same model, seed, step budget and sandbox for both arms.** The only difference is the verification phase.
 - **Metrics:** resolved rate, regression rate, false-acceptance rate (claimed done but hidden tests fail), counterexamples found, tool calls, tokens, patch size, time.
 
-## Known limitations (put these in your writeup)
+## Known limitations
 - A counterexample can come from a *wrong* test. The count is therefore an upper bound on real defects found; the hidden suite is the ground truth.
 - The last revision after the final round is not re-challenged.
 - Only 5 small seeded bugs ship here. Add more (different bug classes, multi-file repos) before drawing conclusions, and run several seeds: small local models are noisy.
