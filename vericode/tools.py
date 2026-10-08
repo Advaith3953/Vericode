@@ -161,7 +161,7 @@ class Workspace:
         p = self._resolve(path)
         if not p.is_file():
             raise ToolError(f"{path} does not exist")
-        lines = p.read_text().splitlines()
+        lines = p.read_text(encoding="utf-8").splitlines()
         start = max(1, int(start))
         end = min(len(lines), int(end)) if end else len(lines)
         end = min(end, start + MAX_READ_LINES - 1)
