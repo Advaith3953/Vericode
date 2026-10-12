@@ -27,8 +27,8 @@ both arms.
 ## 2. Install and prove it works (no model needed)
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate OR .venv\Scripts\Activate.ps1 for windows
-pip install -e '.[dev]' 
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e '.[dev]'
 python -m pytest                 # expect: 79 passed (about 35 s)
 make check                       # ruff, mypy, tests + 90 % coverage gate (currently 98 %), mock-model selftest
 ```

@@ -2,6 +2,20 @@
 
 > New here? Read [`WALKTHROUGH.md`](WALKTHROUGH.md) for a guided tour, expected outputs and how to add bug cases.
 
+## Run it in your browser
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/YOUR_GITHUB_USERNAME/vericode?quickstart=1)
+
+Click the badge (a free GitHub account is enough). Codespaces starts a cloud machine from [`.devcontainer/`](.devcontainer/devcontainer.json),
+installs everything and builds the project; the first start takes a few minutes. Nothing to install locally. Once the terminal opens:
+
+```bash
+make selftest   # full benchmark pipeline with mock models, no API key needed
+make check      # lint + types + tests with coverage gate + selftest
+```
+
+Runs against a real model need a local Ollama server, which the Codespace is not sized for; the mock models exercise the same pipeline.
+
 Question this project answers with data: **does making an agent attack its own patch improve results over a plain agent?**
 
 ```
