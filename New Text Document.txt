@@ -1,0 +1,110 @@
+Absolutely. Here is the **complete set of commands you need on Windows PowerShell** to reproduce the successful checks you just ran.
+
+### 1\. Activate the virtual environment
+
+```
+.\.venv\Scripts\Activate.ps1
+```
+
+### 2\. Install the project with development dependencies
+
+```
+pip install -e ".[dev]"
+```
+
+### 3\. Run the tests
+
+```
+python -m pytest
+```
+
+Expected:
+
+```
+79 passed
+```
+
+### 4\. Run linting
+
+```
+ruff check .
+```
+
+Expected:
+
+```
+All checks passed!
+```
+
+### 5\. Run type checking
+
+```
+mypy vericode bench/harness.py
+```
+
+Expected:
+
+```
+Success: no issues found in 9 source files
+```
+
+### 6\. Run tests with coverage
+
+```
+python -m pytest -q --cov --cov-fail-under=90
+```
+
+Expected:
+
+```
+79 passed
+Required test coverage of 90% reached. Total coverage: 98.21%
+```
+
+### 7\. Run the oracle self-test
+
+```
+python -m bench.harness --llm mock:oracle --out results/selftest-oracle
+```
+
+### 8\. Run the noop self-test
+
+```
+python -m bench.harness --llm mock:noop --out results/selftest-noop
+```
+
+### 9\. Validate both self-tests
+
+```
+python scripts/check_selftest.py results/selftest-oracle results/selftest-noop
+```
+
+Expected:
+
+```
+selftest ok: oracle resolved 10/10, noop resolved 0/10 and was caught every time
+```
+
+## All-in-one version
+
+If you just want the commands in the order you should run them:
+
+```
+.\.venv\Scripts\Activate.ps1
+pip install -e ".[dev]"
+python -m pytest
+ruff check .
+mypy vericode bench/harness.py
+python -m pytest -q --cov --cov-fail-under=90
+python -m bench.harness --llm mock:oracle --out results/selftest-oracle
+python -m bench.harness --llm mock:noop --out results/selftest-noop
+python scripts/check_selftest.py results/selftest-oracle results/selftest-noop
+```
+
+**Don't include this command on Windows unless you've installed****`make`****:**
+
+```
+make check
+```
+
+The commands above are the Windows PowerShell equivalent of the project's `make check`, and you've already confirmed that they all pass.
